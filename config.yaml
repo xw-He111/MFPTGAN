@@ -1,0 +1,89 @@
+# 生成器参数
+encoder_name: 'convnext-l'
+decoder_name: 'MultiScaleColorDecoder'
+num_input_channels: 3
+input_size: [256, 256]
+nf: 512
+last_norm: 'Spectral'
+do_normalize: False
+num_queries_l: 100
+num_queries_ab: 100
+num_scales: 3
+dec_layers: 9
+encoder_from_pretrain: True
+
+# 判别器参数
+n_channels: 3
+nf_d: 64
+
+# 训练数据
+data_path: ./  # 训练数据地址
+
+# 训练参数
+resume_train: false  # 是否继续训练
+resume_g_path: './checkpoints/GF1_1107_100000_en_1.5/net_g_79_60000.pth'  # 继续训练的.pth地址
+resume_d_path: './checkpoints/GF1_1107_100000_en_1.5/net_d_79_60000.pth'  # 继续训练的.pth地址
+
+num_workers: 4
+batch_size: 4
+
+lr_g: !!float 1e-4  # 学习率
+weight_decay_g: 0.01
+betas_g: [0.9, 0.99]
+lr_d: !!float 1e-4
+weight_decay_d: 0
+betas_d: [0.9, 0.99]
+
+milestones: [40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 200000]  # , 120000, 140000, 160000, 180000, 200000]
+# milestones: [20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000]
+gamma: 0.5
+
+print_freq: 1000
+save_every_epoch: 10
+save_path: ./checkpoints/GF7_1120_model9 # 训练文件保存地址
+# val_iter: !!float 1e4
+# val_results: ./checkpoints/GF7/val
+# true_label: ./datasets/GF7/val_label
+
+# start_iter: 0  # 若不是继续训练，设置为0
+# iters: 200000
+
+n_epochs: 100
+
+start_epoch: 0
+start_iter: 0
+
+color_enchance: false
+color_enhance_factor: 1.0
+
+# l1_loss
+reduction: mean
+w_l: 0.1
+w_ab: 0.1 
+
+# PerceptualLoss  没用上
+layer_weights: 
+  'conv1_1': 0.0625
+  'conv2_1': 0.125
+  'conv3_1': 0.25
+  'conv4_1': 0.5
+  'conv5_1': 1.0
+vgg_type: vgg16_bn
+use_input_norm: true
+range_norm:  false
+style_weight: 0
+criterion: l1
+# w2: 5.0
+w_per: 7.0
+
+# w_tv: 1.25
+# w_ss: 3.0
+
+# gan_opt
+gan_type: vanilla
+real_label_val: 1.0
+fake_label_val: 0.0
+w_gan: 1.0
+
+# 保存训练模型和日志文件
+# save_dir_log: ./checkpoints/GF7/logs
